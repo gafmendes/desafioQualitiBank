@@ -13,7 +13,7 @@ import projetoteste.entity.Client;
 @Stateless
 public class ClientDAO {
 
-	protected EntityManager entityManager;
+	private EntityManager entityManager;
 	private static ClientDAO instance;
 	
 	//Singleton
@@ -46,11 +46,12 @@ public class ClientDAO {
 		return getById(Integer.parseInt(id));
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Account> getContas(final int id) {
 		return entityManager.createQuery("FROM " + Account.class.getName() + " WHERE cliente_id = :cliente_id").setParameter("cliente_id", id).getResultList();		
 	}
 	
-	
+	@SuppressWarnings("unchecked")
 	public List<Client> getAll() {
 		return entityManager.createQuery("FROM " + Client.class.getName()).getResultList();
 	}

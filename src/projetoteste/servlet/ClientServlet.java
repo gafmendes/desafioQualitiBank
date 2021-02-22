@@ -15,7 +15,7 @@ import projetoteste.dao.ClientDAO;
 import projetoteste.entity.Account;
 import projetoteste.entity.Client;
 
-@WebServlet("/cliente")
+@WebServlet("/client/*")
 public class ClientServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 
@@ -30,13 +30,29 @@ public class ClientServlet extends HttpServlet{
 		
 		if(action == null) {
 			doGetIndex(request, response);
+		} else if (action.equalsIgnoreCase("list")) {
+			doGetList(request, response);
+		} else if (action.equalsIgnoreCase("new")) {
+			doGetNew(request, response);
+		} else if (action.equalsIgnoreCase("edit")) {
+			doGetEdit(request, response);
+		} else if (action.equalsIgnoreCase("remove")) {
+			doGetRemove(request, response);
 		}
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		super.doPost(request, response);
+		String action = request.getParameter("action");
+
+		if (action == null) {
+			doGetIndex(request, response);
+		} else if (action.equalsIgnoreCase("insert")) {
+			doGetInsert(request, response);
+		} else if (action.equalsIgnoreCase("update")) {
+			doGetUpdate(request, response);
+		}
 	}
 	
 	protected void doGetIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,20 +61,20 @@ public class ClientServlet extends HttpServlet{
 	
 	protected void doGetList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Client> clientList = ClientDAO.getInstance().getAll();
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("...");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("client-list.jsp");
 		request.setAttribute("client", clientList);
 		requestDispatcher.forward(request, response);
 	}
 	
 	protected void doGetNew(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("...");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("client-form.jsp");
 		requestDispatcher.forward(request, response);
 	}
 	
 	protected void doGetEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Integer id = Integer.parseInt(request.getParameter("id"));
 		Client client = ClientDAO.getInstance().getById(id);
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("...");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("client-form.jsp");
 		request.setAttribute("client", client);
 		requestDispatcher.forward(request, response);
 	}

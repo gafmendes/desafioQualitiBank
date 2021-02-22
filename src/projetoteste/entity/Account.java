@@ -1,7 +1,10 @@
 package projetoteste.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,32 +12,30 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "account")
-public class Account {
+public class Account implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Integer id;
-	
+	private int id;
+
 	@Column(name = "accountNumber")
 	private String accountNumber;
-	
+
 	@Column(name = "accountBalance")
 	private Double accountBalance;
-	
-	@ManyToOne
-	@JoinColumn(name="client_id")
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "client_id")
 	private Client client;
 
 	public Account() {
-		
+
 	}
-	
+
 	public Account(String accountNumber, Double accountBalance, Client client) {
 		super();
 		this.accountNumber = accountNumber;
@@ -42,7 +43,7 @@ public class Account {
 		this.client = client;
 	}
 
-	public Account(Integer id, String accountNumber, Double accountBalance, Client client) {
+	public Account(int id, String accountNumber, Double accountBalance, Client client) {
 		super();
 		this.id = id;
 		this.accountNumber = accountNumber;
@@ -50,7 +51,7 @@ public class Account {
 		this.client = client;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -58,22 +59,28 @@ public class Account {
 		return accountNumber;
 	}
 
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
 	public Double getAccountBalance() {
 		return accountBalance;
+	}
+
+	public void setAccountBalance(Double accountBalance) {
+		this.accountBalance = accountBalance;
 	}
 
 	public Client getClient() {
 		return client;
 	}
-	
-	public void credit(Double value){
+
+	public void credit(Double value) {
 		this.accountBalance += value;
 	}
-	
-	public void debit(Double value){
+
+	public void debit(Double value) {
 		this.accountBalance -= value;
 	}
-	
-	
-	
+
 }

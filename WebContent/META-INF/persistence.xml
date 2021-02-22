@@ -10,7 +10,7 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
 		<class>
-		projetoteste.entity.Cliente
+		projetoteste.entity.Client
 		</class>
 
 		<properties>
